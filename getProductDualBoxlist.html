@@ -1,0 +1,131 @@
+<template>
+    <p>Component name: getProductDualBoxlist</p>
+    <lightning-card title="Products" icon-name="custom:custom14">
+        <div class="slds-p-around_small">
+            <lightning-dual-listbox name="languages" label="Select Records" source-label="Available Records"
+                options={options} value={selectedValues} onchange={handleChange}>
+            </lightning-dual-listbox>
+        </div>
+        <div class="modal">
+            <div class="modal-content">
+                <lightning-button variant="brand" label="Create Order" title="Create Order" onclick={openModal}
+                    class="slds-m-left_x-small">
+                </lightning-button>
+                <template if:true={isModalOpen}>
+                    <!-- Modal/Popup Box LWC starts here -->
+                    <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+                        aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                        <div class="slds-modal__container">
+                            <!-- Modal/Popup Box LWC header here -->
+                            <header class="slds-modal__header">
+                                <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+                                    title="Close" onclick={closeModal}>
+                                    <lightning-icon icon-name="utility:close" alternative-text="close" variant="inverse"
+                                        size="small"></lightning-icon>
+                                    <span class="slds-assistive-text">Close</span>
+                                </button>
+                                <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Please fill
+                                    order information</h2>
+                            </header>
+                            <!-- Modal/Popup Box LWC body starts here -->
+                            <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+
+                                <!-- <p><b>Modals/Popup Box are used to display content in a layer above the app.
+                                </b></p>
+                                <p><b>This paradigm is used in cases such as the creation or editing of a record, as well as various types of messaging and wizards.
+                                </b></p> -->
+
+                                <lightning-record-edit-form object-api-name={objectApiName} onsuccess={handleSuccess}
+                                    onsubmit={handleSubmit}>
+                                    <lightning-messages>
+                                    </lightning-messages>
+                                    <lightning-input-field field-name='Account__c'></lightning-input-field>
+                                    <lightning-input-field field-name={BillingAddress}></lightning-input-field>
+                                    <lightning-input-field field-name='Shipping_Address__c'></lightning-input-field>
+                                    <lightning-input-field field-name='Person_Email_Order_placed_by__c'>
+                                    </lightning-input-field>
+                                    <!-- <lightning-datatable key-field="id" data={data} columns={columns}></lightning-datatable> -->
+                                    <table>
+                                        <tbody>
+                                            <tr>
+                                                <th>Selected Products</th>
+                                                <th>Quantity</th>
+                                            </tr>
+                                            <template for:each={selectedu} for:item="selectedProducts">
+                                                <tr key={selectedProducts}>
+                                                    <td class="prname">{selectedProducts}</td>
+                                                    <td><input type="number" name="quantity" class="num"></td>
+                                                </tr>
+                                            </template>
+                                        </tbody>
+                                    </table>
+
+                                    <lightning-button class="slds-m-top_small" type="submit" label="Save"
+                                        variant="brand" style="float: right; ">
+                                    </lightning-button>
+
+                                    <lightning-button class="slds-m-top_small" type="cancel" label="Cancel"
+                                        style="float: right;" onclick={closeModal}>
+                                    </lightning-button>
+                                    <!-- Modal/Popup Box LWC footer starts here -->
+                                    <!-- <footer class="slds-modal__footer"> -->
+                                    <!-- <button class="slds-button slds-button_neutral" onclick={closeModal}
+                                            title="Cancel">Cancel</button> -->
+                                    <!-- <button class="slds-button slds-button_brand" onclick={submitDetails}
+                                            title="SAVE">SAVE</button> -->
+
+                                    <!-- <lightning-button class="slds-m-top_small slds-button slds-button_brand" onclick={submitDetails} type="submit"
+                                        label="Save" title="Save">
+                                    </lightning-button> -->
+                                    <!-- </footer> -->
+                                </lightning-record-edit-form>
+
+                            </div>
+                            <!-- Modal/Popup Box LWC footer starts here -->
+                            <!-- <footer class="slds-modal__footer">
+                                <button class="slds-button slds-button_neutral" onclick={closeModal}
+                                    title="Cancel">Cancel</button>
+                                <button class="slds-button slds-button_brand" onclick={submitDetails}
+                                    title="SAVE">SAVE</button>
+                            </footer> -->
+                        </div>
+                    </section>
+                    <div class="slds-backdrop slds-backdrop_open"></div>
+                </template>
+            </div>
+
+        </div>
+
+        <div class="forOrderTable">
+            <template if:true={isOrderSave}>
+                <table>
+                    <tbody>
+                        <tr>
+                            <th>Created Order id</th>
+                            <th>Billing Address</th>
+                            <th>Account</th>
+                        </tr>
+                        <template for:each={orderInformationlist} for:item="orderInformationlists">
+                            <tr key={orderInformationlists.OrderIDD} data-id={orderInformationlists.OrderIDD} value={orderInformationlists.OrderIDD} onclick={handleExtraRow}>
+                                <td >{orderInformationlists.OrderIDD} </td>
+                                <td>{orderInformationlists.BillingAddress}</td>
+                                <td>{orderInformationlists.AccoutName}</td>
+                            </tr>
+                            <template if:true={xyz}>
+
+                                <template for:each={selectedu} for:item="prod">
+                                    <tr key={prod}>
+                                        <td>{prod}</td>
+                                    </tr>
+                                </template>
+
+                            </template>
+                        </template>
+                    </tbody>
+                </table>
+            </template>
+
+        </div>
+
+    </lightning-card>
+</template>
